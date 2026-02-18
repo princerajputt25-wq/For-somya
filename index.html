@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+
+<body>
+  
+</body>
+
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Somya</title>
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: #000; overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            color: white;
+        }
+
+        .aura {
+            position: fixed; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #2e050d 0%, #000 80%);
+            z-index: 1;
+        }
+
+        #butterfly-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2; pointer-events: none;
+        }
+
+        .wrapper {
+            position: relative; z-index: 10;
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .page {
+            display: none; width: 85%; max-width: 400px; text-align: center;
+        }
+        .active { display: block; animation: floatUp 1.2s ease-out forwards; }
+
+        @keyframes floatUp {
+            from { opacity: 0; transform: translateY(20px); filter: blur(10px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        /* ICON MUTE BUTTON - BOTTOM RIGHT */
+        #mute-btn {
+            position: fixed; bottom: 25px; right: 25px;
+            z-index: 100; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white; width: 45px; height: 45px; border-radius: 50%;
+            font-size: 1.2rem; cursor: pointer;
+            backdrop-filter: blur(8px); transition: 0.3s;
+            display: none; align-items: center; justify-content: center;
+        }
+        #mute-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.2); }
+
+        h1 { 
+            font-size: 3.2rem; letter-spacing: 15px; font-weight: 200;
+            margin: 0; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.3);
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            color: rgba(255,255,255,0.4); 
+            margin-top: 20px; letter-spacing: 4px; font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .heart-frame {
+            width: 250px; height: 250px; margin: 0 auto 25px;
+            clip-path: url(#heartPath);
+            box-shadow: 0 0 50px rgba(255, 50, 80, 0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        img { width: 100%; height: 100%; object-fit: cover; }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            padding: 20px; border-left: 3px solid #ff3366;
+            text-align: left; color: rgba(255, 255, 255, 0.95);
+            font-size: 1rem; line-height: 1.7; white-space: pre-wrap; 
+            max-height: 300px; overflow-y: auto;
+        }
+
+        .btn {
+            margin-top: 30px; background: #fff; border: none;
+            color: #000; padding: 12px 35px; border-radius: 50px;
+            font-size: 0.8rem; letter-spacing: 3px; font-weight: bold;
+            cursor: pointer; transition: 0.3s;
+        }
+
+        .song-link {
+            text-decoration: none; background: #ff3366; color: #fff; 
+            padding: 15px 30px; border-radius: 50px; font-weight: bold; 
+            letter-spacing: 1px; display: inline-block; margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="mute-btn" onclick="toggleMute()">🔊</button>
+
+    <svg width="0" height="0">
+        <defs>
+            <clipPath id="heartPath" clipPathUnits="objectBoundingBox">
+                <path d="M0.5,1 C0.5,1 0,0.7 0,0.35 C0,0.15 0.15,0 0.32,0 C0.42,0 0.48,0.05 0.5,0.12 C0.52,0.05 0.58,0 0.68,0 C0.85,0 1,0.15 1,0.35 C1,0.7 0.5,1 0.5,1" />
+            </clipPath>
+        </defs>
+    </svg>
+
+    <div class="aura"></div>
+    <canvas id="butterfly-canvas"></canvas>
+
+    <div class="wrapper">
+        <div id="p1" class="page active">
+            <h1>SOMYA</h1>
+            <p class="tagline">A piece of my heart, kept for you.</p>
+            <button class="btn" onclick="startExperience()">OPEN IT</button>
+        </div>
+
+        <div id="p2" class="page">
+            <div class="heart-frame"><img src="pic1.png"></div>
+            <p style="color: rgba(255,255,255,0.7); font-style: italic;">"Every silence reminds me of your voice."</p>
+            <button class="btn" onclick="go(3)">NEXT</button>
+        </div>
+
+        <div id="p3" class="page">
+            <div class="heart-frame" style="width:150px; height:150px;"><img src="pic2.png"></div>
+            <div id="typewriter" class="message-box"></div>
+            <button id="nextBtn" class="btn" style="display:none;" onclick="go(4)">CONTINUE</button>
+        </div>
+
+        <div id="p4" class="page">
+            <div class="heart-frame"><img src="pic3.png"></div>
+            <p style="color:#fff; font-style:italic; margin-bottom:20px;">"Some things are left unsaid, but never unfelt."</p>
+            <a href="https://youtu.be/hHuG7FIKgtc?si=wazKLSXB52yASy-M" target="_blank" class="song-link">
+               LISTEN TO MY HEART 🎵
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const music = document.getElementById('bgMusic');
+        const muteBtn = document.getElementById('mute-btn');
+        const canvas = document.getElementById('butterfly-canvas');
+        const ctx = canvas.getContext('2d');
+        let butterflies = [];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            butterflies = Array.from({length: 12}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                size: Math.random()*5+3, angle: Math.random()*Math.PI*2,
+                v: Math.random()*0.5+0.2, flap: 0, flapSpeed: Math.random()*0.15+0.05
+            }));
+        }
+
+        function drawButterfly(x, y, size, flap, angle) {
+            ctx.save(); ctx.translate(x, y); ctx.rotate(angle);
+            let wingW = Math.abs(Math.cos(flap)) * size * 2;
+            ctx.fillStyle = "rgba(255, 51, 102, 0.7)";
+            ctx.beginPath(); ctx.ellipse(-wingW/2, -size/2, wingW, size*1.5, 1, 0, Math.PI * 2); 
+            ctx.ellipse(wingW/2, -size/2, wingW, size*1.5, -1, 0, Math.PI * 2); ctx.fill();
+            ctx.restore();
+        }
+
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            butterflies.forEach(b => {
+                b.x += Math.cos(b.angle)*b.v; b.y += Math.sin(b.angle)*b.v; b.flap += b.flapSpeed;
+                drawButterfly(b.x, b.y, b.size, b.flap, b.angle+Math.PI/2);
+                if(b.x < -50) b.x = canvas.width+50; if(b.x > canvas.width+50) b.x = -50;
+                if(b.y < -50) b.y = canvas.height+50; if(b.y > canvas.height+50) b.y = -50;
+            });
+            requestAnimationFrame(animate);
+        }
+        init(); animate();
+
+        const fullMessage = "Somya,\n\nI miss you so much.\n\nMujhe pata hai ab ham sath nahi hai mere messages tumhe pareshan krte hai, but bahot koshish krta hu tumhe message na karu... but pta nhi fr khud kr deta hu. Tumhare bina life bahot boring hogyi hai yrr…..🥺\n\nI love you yrr…..🥰😔";
+
+        function startExperience() {
+            music.play().then(() => {
+                muteBtn.style.display = 'flex';
+            }).catch(() => {
+                document.addEventListener('click', () => { 
+                    music.play();
+                    muteBtn.style.display = 'flex';
+                }, {once: true});
+            });
+            go(2);
+        }
+
+        function toggleMute() {
+            if (music.muted) {
+                music.muted = false;
+                muteBtn.innerText = "🔊";
+            } else {
+                music.muted = true;
+                muteBtn.innerText = "🔇";
+            }
+        }
+
+        function typeWriter(text, i) {
+            const box = document.getElementById("typewriter");
+            if (i < text.length) {
+                box.innerHTML = text.substring(0, i+1) + '<span style="color:#ff3366">|</span>';
+                box.scrollTop = box.scrollHeight;
+                setTimeout(() => typeWriter(text, i + 1), 45);
+            } else {
+                box.innerHTML = text;
+                document.getElementById('nextBtn').style.display = 'inline-block';
+            }
+        }
+
+        function go(n) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('p'+n).classList.add('active');
+            if(n === 3) typeWriter(fullMessage, 0);
+        }
+
+        window.onresize = init;
+    </script>
+</body>
+</html>
